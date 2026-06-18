@@ -6,7 +6,7 @@
 #include "Config.h"
 #include "Player.h"
 #include "ScriptMgr.h"
-#include "IndividualProgression.h"
+// #include "IndividualProgression.h"
 
 
 enum class PROGRESSION_STATE{
@@ -19,7 +19,7 @@ enum class PROGRESSION_STATE{
 class IndividualProgressionService : public CreatureScript
 {
 public:
-    IndividualProgressionService() 
+    IndividualProgressionService()
         : CreatureScript("individual_progression_service")
     {
     }
