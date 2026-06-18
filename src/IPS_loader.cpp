@@ -7,7 +7,7 @@ void AddIndividualProgressionServiceScripts();
 
 // cf. the naming convention https://github.com/azerothcore/azerothcore-wotlk/blob/master/doc/changelog/master.md#how-to-upgrade-4
 // additionally replace all '-' in the module folder name with '_' here
-void Addmod_indiv_prog_service()
+void Addmod_individual_progression_serviceScripts()
 {
     AddIndividualProgressionServiceScripts();
 }
