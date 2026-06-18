@@ -7,8 +7,9 @@
 #include "Player.h"
 #include "ScriptMgr.h"
 #include "IndividualProgression.h"
+#include "ScriptedGossip.h"
 
-  enum class PROGRESSION_SERVICE_TIER : uint32 {
+enum class PROGRESSION_SERVICE_TIER : uint32 {
     START = 0,           // (Starting state - nothing to purchase)
     MOLTEN_CORE = 1,     // (Molten Core)
     ONYXIA = 2,          // (Onyxia's Lair)
@@ -28,7 +29,7 @@
     WOTLK_TIER_3 = 16,   // (Trial of the Crusader)
     WOTLK_TIER_4 = 17,   // (Icecrown Citadel)
     WOTLK_TIER_5 = 18,   // (Ruby Sanctum)
-  };
+};
 
 // Add player scripts
 class IndividualProgressionService : public CreatureScript
