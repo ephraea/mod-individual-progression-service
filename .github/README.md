@@ -1,25 +1,19 @@
-# SKELETON - Module template
+# mod-individual-progression-service
 
-[English](README.md) | [Español](README_ES.md)
+## UNDER CONSTRUCTION
+- This mod is a functioning bare-minimum mod currently. A few icons display incorrectly, and there is more testing to be done before a proper version 1 release. It provides features for the player to move between tiers (both directions) in the [Individual Progression](https://github.com/ZhengPeiRu21/mod-individual-progression) mod by ZhengPeiRu21.
 
+## About
+- This mod provides an NPC and custom script that allows the user to set their progression tier in the [Individual Progression](https://github.com/ZhengPeiRu21/mod-individual-progression) mod by ZhengPeiRu21 quickly and easily. The intent is to provide a self-service and in-game solution to jumping through (or going backwards in) the progression system. <bold>Note:This does NOT handle attunement/granting items typically required for Vanilla & TBC raids</bold> (ex: Needing the Drakefire Amulet in your inventory for Vanilla Onyxia). If there is a desire for that, I will happily explore it in the future, so please feel free to provide any feedback you have on that or anything else!
 
-## How to create your own module
+## Features
+- Spawnable progression tier selection npc
+- Supports all Individual Progression tiers (including resetting to start)
+- Currently all tiers are free to purchase with no requirements (to be configurably priced in later versions)
 
-1. Use the script `create_module.sh` located in [`modules/`](https://github.com/azerothcore/azerothcore-wotlk/tree/master/modules) to start quickly with all the files you need and your git repo configured correctly (heavily recommended).
-1. You can then use these scripts to start your project: https://github.com/azerothcore/azerothcore-boilerplates
-1. Do not hesitate to compare with some of our newer/bigger/famous modules.
-1. Edit the `README.md` and other files (`include.sh` etc...) to fit your module. Note: the README is automatically created from `README_example.md` when you use the script `create_module.sh`.
-1. Publish your module to our [catalogue](https://www.azerothcore.org/catalogue.html).
-
-
-## How to test your module?
-
-Disable PCH (precompiled headers) and try to compile. To disable PCH, set `-DNOPCH=1` with Cmake (more info [here](http://www.azerothcore.org/wiki/CMake-options)).
-
-If you forgot some headers, it is time to add them!
-
-## Licensing
-
-The default license of the skeleton-module template is the MIT but you can use a different license for your own modules.
-
-So modules can also be kept private. However, if you need to add new hooks to the core, as well as improving existing ones, you have to share your improvements because the main core is released under the AGPL license. Please [provide a PR](https://www.azerothcore.org/wiki/How-to-create-a-PR) if that is the case.
+## Installation
+- No special tricks! Simply place the mod-individual-progression-service folder into the /azerothcore-wotlk-repo/modules/ folder and re-build and compile
+- After compiling, clone the individual-progression-service.conf.dist file under /configs/modules into the same folder and edit the name to be individual-progression-service.conf (not ".dist"). Make an configuration changes in the new file
+- Add the related NPC to the database with the included .sql script
+- They can be added into the game with the command ".npc add 371001" once in the world database
+- Enjoy!
