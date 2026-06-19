@@ -42,7 +42,6 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
-        // TODO: Add top message to greet the player and acknowledge which progression they're currently on
         // Check if mod is enabled. Stop execution if disabled
         if(!sConfigMgr->GetOption<bool>("IndividualProgressionService.Enable", true))
         {
@@ -51,9 +50,7 @@ public:
         }
 
         // TODO: Inform player of current progression tier
-        // Recreate in the actual dialog menu
 
-        
         // Creating Menu Items
         // TODO: Add pricing config (off by default)
         // AddGossipItemFor(
@@ -80,8 +77,6 @@ public:
           );
         }
 
-        // TODO: Add rest of Gossip Menus once we prove this works
-
         SendGossipMenuFor(player, DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
 
         return true;
@@ -89,11 +84,6 @@ public:
 
     bool OnGossipSelect( Player* player, Creature* creature, uint32 sender, uint32 action)
     { 
-        // TODO: Here we need to check if the player can purchase it, here is where we do the purchase
-        // TODO: Make it a purchase and check config to see if it's free or not
-        // Apply purchase
-        auto tier = static_cast<PROGRESSION_SERVICE_TIER>(action);
-
         // If action id is outside of our scope, we skip
         if (action > static_cast<uint32>(PROGRESSION_SERVICE_TIER::WOTLK_TIER_5))
         {
@@ -101,6 +91,12 @@ public:
             return true;
         }
 
+        auto tier = static_cast<PROGRESSION_SERVICE_TIER>(action);
+
+        // TODO: Here we need to check if the player can purchase it, here is where we do the purchase
+        // TODO: Make it a purchase and check config to see if it's free or not
+
+        // Apply purchase
         ApplyProgressionTierPurchase(player, tier);
 
         CloseGossipMenuFor(player);
@@ -112,13 +108,13 @@ public:
         // Handles all progress except for a full reset to 0
         if(newTier != PROGRESSION_SERVICE_TIER::START)
         {
-          // This is a built-in method from IP that clears out all quests then sets the progression to newTier
+          // This is a built-in method from Individual Progression module that clears out all quests then sets the progression to newTier
           sIndividualProgression->ForceUpdateProgressionState(player, static_cast<ProgressionState>(newTier));
           sIndividualProgression->checkIPPhasing(player, player->GetAreaId());
 
           ChatHandler(player->GetSession()).PSendSysMessage("You have successfully progressed to {}.", GetTierName(newTier));
         }
-        // Handles the full reset case
+        // Handles the full reset to 0 case
         else
         {
           // Progression is determined by quests, so we remove the corresponding progression quests
@@ -158,28 +154,28 @@ public:
           return "Interface/Icons/achievement_boss_cthun";
         case PROGRESSION_SERVICE_TIER::NAXX40:
           return "Interface/Icons/achievement_boss_kelthuzad_01";
-        case PROGRESSION_SERVICE_TIER::PRE_TBC:
-          return "Interface/Icons/achievement_dungeon_karazhan";
+        case PROGRESSION_SERVICE_TIER::PRE_TBC:                 
+          return "Interface/Icons/Achievement_Dungeon_Outland_DungeonMaster";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_1:
           return "Interface/Icons/achievement_boss_princemalchezaar_02";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_2:
           return "Interface/Icons/achievement_boss_kael'thassunstrider_01";
-        case PROGRESSION_SERVICE_TIER::TBC_TIER_3:   // Note Zul Aman is not in the Individual Progression mod, so this should never be called
-          return "Interface/Icons/inv_misc_questionmark";
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_3:   
+          return "Interface/Icons/Achievement_Boss_Zuljin";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_4:
           return "Interface/Icons/achievement_boss_illidan";
-        case PROGRESSION_SERVICE_TIER::TBC_TIER_5:
-          return "Interface/Icons/achievement_boss_kiljaeden";
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_5:                
+          return "Interface/Icons/ACHIEVEMENT_BOSS_KILJAEDAN";    
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_1:
           return "Interface/Icons/achievement_boss_kelthuzad_01";
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_2:
           return "Interface/Icons/achievement_boss_yoggsaron_01";
-        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_3:
-          return "Interface/Icons/achievement_boss_anubarak_01";
+        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_3:                 
+          return "Interface/Icons/Achievement_Boss_Anubarak";       
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_4:
           return "Interface/Icons/achievement_boss_lichking";
-        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_5:
-          return "Interface/Icons/achievement_boss_halion";
+        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_5:                 
+          return "Interface/Icons/Achievement_Boss_ValithraDreamwalker";     
         default:
           return "Interface/Icons/inv_misc_questionmark";
       }
@@ -211,7 +207,7 @@ public:
           return "TBC Tier 1";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_2:
           return "TBC Tier 2";
-        case PROGRESSION_SERVICE_TIER::TBC_TIER_3: // Note Zul Aman is not in the Individual Progression mod, so this should never be called
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_3: 
           return "TBC Tier 3";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_4:
           return "TBC Tier 4";

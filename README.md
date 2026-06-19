@@ -12,7 +12,7 @@
 - Currently all tiers are free to purchase with no requirements (to be configurably priced in later versions)
 
 ## Installation
-- No special tricks! Simply place the mod-individual-progression-service folder into the /azerothcore-wotlk-repo/modules/ folder and re-build and compile
+- No special tricks! Simply place the mod-individual-progression-service folder into the /azerothcore-wotlk-repo/modules/ folder, then re-build and re-compile
 - After compiling, clone the individual-progression-service.conf.dist file under /configs/modules into the same folder and edit the name to be individual-progression-service.conf (not ".dist"). Make an configuration changes in the new file
 - Add the related NPC to the database with the included .sql script
 - They can be added into the game with the command ".npc add 371001" once in the world database
