@@ -10,25 +10,25 @@
 #include "ScriptedGossip.h"
 
 enum class PROGRESSION_SERVICE_TIER : uint32 {
-    START = 0,           // (Starting state - nothing to purchase)
-    MOLTEN_CORE = 1,     // (Molten Core)
-    ONYXIA = 2,          // (Onyxia's Lair)
-    BLACKWING_LAIR = 3,  // (Blackwing Lair)
-    PRE_AQ = 4,          // (Pre-Ahn'Qiraj / AQ gates quest line)
-    AQ_WAR = 5,          // (AQ War Effort)
-    AQ = 6,              // (Ahn'Qiraj)
-    NAXX40 = 7,          // (Naxxramas - Vanilla)
-    PRE_TBC = 8,         // (Pre-TBC / Dark Portal - unlocks Karazhan, Gruul, Magtheridon)
-    TBC_TIER_1 = 9,      // (Karazhan, Gruul's Lair, Magtheridon's Lair)
-    TBC_TIER_2 = 10,     // (Serpentshrine Cavern, Tempest Keep)
-    TBC_TIER_3 = 11,     // (Zul'Aman) - DISABLED in IP: no cost entry, cannot be purchased
-    TBC_TIER_4 = 12,     // (Hyjal Summit, Black Temple)
-    TBC_TIER_5 = 13,     // (Sunwell Plateau - unlocks Northrend / WotLK leveling)
-    WOTLK_TIER_1 = 14,   // (Naxxramas, Eye of Eternity, Obsidian Sanctum)
-    WOTLK_TIER_2 = 15,   // (Ulduar)
-    WOTLK_TIER_3 = 16,   // (Trial of the Crusader)
-    WOTLK_TIER_4 = 17,   // (Icecrown Citadel)
-    WOTLK_TIER_5 = 18,   // (Ruby Sanctum)
+    START,           // (Starting state - nothing to purchase)
+    MOLTEN_CORE,     // (Molten Core)
+    ONYXIA,          // (Onyxia's Lair)
+    BLACKWING_LAIR,  // (Blackwing Lair)
+    PRE_AQ,          // (Pre-Ahn'Qiraj / AQ gates quest line)
+    AQ_WAR,          // (AQ War Effort)
+    AQ,              // (Ahn'Qiraj)
+    NAXX40,          // (Naxxramas - Vanilla)
+    PRE_TBC,         // (Pre-TBC / Dark Portal - unlocks Karazhan, Gruul, Magtheridon)
+    TBC_TIER_1,      // (Karazhan, Gruul's Lair, Magtheridon's Lair)
+    TBC_TIER_2,     // (Serpentshrine Cavern, Tempest Keep)
+    TBC_TIER_3,     // (Zul'Aman) - TODO: Check the ordering here in IP
+    TBC_TIER_4,     // (Hyjal Summit, Black Temple)
+    TBC_TIER_5,     // (Sunwell Plateau - unlocks Northrend / WotLK leveling)
+    WOTLK_TIER_1,   // (Naxxramas, Eye of Eternity, Obsidian Sanctum)
+    WOTLK_TIER_2,   // (Ulduar)
+    WOTLK_TIER_3,   // (Trial of the Crusader)
+    WOTLK_TIER_4,   // (Icecrown Citadel)
+    WOTLK_TIER_5    // (Ruby Sanctum)
 };
 
 // Add player scripts
@@ -43,23 +43,42 @@ public:
     bool OnGossipHello(Player* player, Creature* creature)
     {
         // TODO: Add top message to greet the player and acknowledge which progression they're currently on
+        // Check if mod is enabled. Stop execution if disabled
+        if(!sConfigMgr->GetOption<bool>("IndividualProgressionService.Enable", true))
+        {
+            ChatHandler(player->GetSession()).PSendSysMessage("Individual Progression Service is disabled. Please enable to talk to this NPC.");
+            return false;
+        }
 
+        // TODO: Inform player of current progression tier
+        // Recreate in the actual dialog menu
+
+        
         // Creating Menu Items
-        AddGossipItemFor(
-            player,
-            GOSSIP_ICON_INTERACT_1,
-            "|T" + GetTierIcon(PROGRESSION_SERVICE_TIER::START) + ":50:50|tProgress to " + GetTierName(PROGRESSION_SERVICE_TIER::START),
-            GOSSIP_SENDER_MAIN,
-            static_cast<uint32>(PROGRESSION_SERVICE_TIER::START)
-        );
+        // TODO: Add pricing config (off by default)
+        // AddGossipItemFor(
+        //     player,
+        //     GOSSIP_ICON_INTERACT_1,
+        //     "|T" + GetTierIcon(PROGRESSION_SERVICE_TIER::START) + ":35:35|tProgress to " + GetTierName(PROGRESSION_SERVICE_TIER::START),
+        //     GOSSIP_SENDER_MAIN,
+        //     static_cast<uint32>(PROGRESSION_SERVICE_TIER::START)
+        // );
 
-        AddGossipItemFor(
-            player,
-            GOSSIP_ICON_INTERACT_1,
-            "|T" + GetTierIcon(PROGRESSION_SERVICE_TIER::MOLTEN_CORE) + ":50:50|tProgress to " + GetTierName(PROGRESSION_SERVICE_TIER::MOLTEN_CORE),
-            GOSSIP_SENDER_MAIN,
-            static_cast<uint32>(PROGRESSION_SERVICE_TIER::MOLTEN_CORE)
-        );
+        // Loop through all items in the enum and display their related icon and message.
+        for(uint32 i = static_cast<uint32>(PROGRESSION_SERVICE_TIER::START);
+            i <= static_cast<uint32>(PROGRESSION_SERVICE_TIER::WOTLK_TIER_5);
+            ++i)
+        {
+          auto tier = static_cast<PROGRESSION_SERVICE_TIER>(i);
+
+          AddGossipItemFor(
+              player,
+              GOSSIP_ICON_INTERACT_1,
+              "|T" + GetTierIcon(tier) + ":35:35|tProgress through " + GetTierName(tier),
+              GOSSIP_SENDER_MAIN,
+              i
+          );
+        }
 
         // TODO: Add rest of Gossip Menus once we prove this works
 
@@ -69,22 +88,54 @@ public:
     }
 
     bool OnGossipSelect( Player* player, Creature* creature, uint32 sender, uint32 action)
-    {
+    { 
         // TODO: Here we need to check if the player can purchase it, here is where we do the purchase
-        ApplyProgressionTierPurchase(player, action);
-
         // TODO: Make it a purchase and check config to see if it's free or not
+        // Apply purchase
+        auto tier = static_cast<PROGRESSION_SERVICE_TIER>(action);
+
+        // If action id is outside of our scope, we skip
+        if (action > static_cast<uint32>(PROGRESSION_SERVICE_TIER::WOTLK_TIER_5))
+        {
+            CloseGossipMenuFor(player);
+            return true;
+        }
+
+        ApplyProgressionTierPurchase(player, tier);
 
         CloseGossipMenuFor(player);
         return true;
     }
 
-    void ApplyProgressionTierPurchase(Player* player, uint32 newTier)
+    void ApplyProgressionTierPurchase(Player* player, PROGRESSION_SERVICE_TIER newTier)
     {
-        sIndividualProgression->ForceUpdateProgressionState(player, static_cast<ProgressionState>(newTier));
-        sIndividualProgression->checkIPPhasing(player, player->GetAreaId());
+        // Handles all progress except for a full reset to 0
+        if(newTier != PROGRESSION_SERVICE_TIER::START)
+        {
+          // This is a built-in method from IP that clears out all quests then sets the progression to newTier
+          sIndividualProgression->ForceUpdateProgressionState(player, static_cast<ProgressionState>(newTier));
+          sIndividualProgression->checkIPPhasing(player, player->GetAreaId());
 
-        ChatHandler(player->GetSession()).PSendSysMessage("You have successfully progressed to {}.", GetTierName(static_cast<PROGRESSION_SERVICE_TIER>(newTier)));
+          ChatHandler(player->GetSession()).PSendSysMessage("You have successfully progressed to {}.", GetTierName(newTier));
+        }
+        // Handles the full reset case
+        else
+        {
+          // Progression is determined by quests, so we remove the corresponding progression quests
+          for(uint32 i=static_cast<uint32>(PROGRESSION_SERVICE_TIER::MOLTEN_CORE); i <= static_cast<uint32>(PROGRESSION_SERVICE_TIER::WOTLK_TIER_5);++i)
+          {
+            uint32 progressionQuest = 66000 + i;
+
+            if(player->GetQuestStatus(progressionQuest) == QUEST_STATUS_REWARDED)
+              player->RemoveRewardedQuest(progressionQuest);
+          }
+
+          // Reset their phase
+          sIndividualProgression->checkIPPhasing(player, player->GetAreaId());
+          
+          ChatHandler(player->GetSession()).PSendSysMessage("Your progression has been reset to the start.");
+        }
+
     }
 
     std::string GetTierIcon(PROGRESSION_SERVICE_TIER tier)
@@ -180,7 +231,6 @@ public:
           return "Unknown Tier";
       }
     }
-
 
 };
 
