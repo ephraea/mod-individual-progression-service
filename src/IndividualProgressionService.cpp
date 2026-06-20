@@ -59,7 +59,7 @@ public:
         if(currentTier != PROGRESSION_SERVICE_TIER::START)
         {
           ChatHandler(
-            player->GetSession()).PSendSysMessage("You have completed up to and including {}.", 
+            player->GetSession()).PSendSysMessage("You have completed up to and including {}.",
             GetTierName(static_cast<PROGRESSION_SERVICE_TIER>(currentTier))
           );
         }
@@ -92,7 +92,7 @@ public:
     }
 
     bool OnGossipSelect( Player* player, Creature* creature, uint32 sender, uint32 action)
-    { 
+    {
         if (!player || !player->GetSession())
             return false;
 
@@ -148,7 +148,7 @@ public:
 
           // Reset their phase
           sIndividualProgression->checkIPPhasing(player, player->GetAreaId());
-          
+
           ChatHandler(player->GetSession()).PSendSysMessage("Your progression has been reset to the start.");
         }
 
@@ -174,28 +174,28 @@ public:
           return "Interface/Icons/achievement_boss_cthun";
         case PROGRESSION_SERVICE_TIER::NAXX40:
           return "Interface/Icons/achievement_boss_kelthuzad_01";
-        case PROGRESSION_SERVICE_TIER::PRE_TBC:                 
+        case PROGRESSION_SERVICE_TIER::PRE_TBC:
           return "Interface/Icons/Achievement_Dungeon_Outland_DungeonMaster";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_1:
           return "Interface/Icons/achievement_boss_princemalchezaar_02";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_2:
           return "Interface/Icons/achievement_boss_kael'thassunstrider_01";
-        case PROGRESSION_SERVICE_TIER::TBC_TIER_3:   
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_3:
           return "Interface/Icons/achievement_boss_illidan";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_4:
           return "Interface/Icons/Achievement_Boss_Zuljin";
-        case PROGRESSION_SERVICE_TIER::TBC_TIER_5:                
-          return "Interface/Icons/ACHIEVEMENT_BOSS_KILJAEDAN";    
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_5:
+          return "Interface/Icons/ACHIEVEMENT_BOSS_KILJAEDAN";
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_1:
           return "Interface/Icons/achievement_boss_kelthuzad_01";
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_2:
           return "Interface/Icons/achievement_boss_yoggsaron_01";
-        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_3:                 
-          return "Interface/Icons/Achievement_Boss_Anubarak";       
+        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_3:
+          return "Interface/Icons/Achievement_Boss_Anubarak";
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_4:
           return "Interface/Icons/achievement_boss_lichking";
-        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_5:                 
-          return "Interface/Icons/Achievement_Boss_ValithraDreamwalker";     
+        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_5:
+          return "Interface/Icons/Achievement_Boss_ValithraDreamwalker";
         default:
           return "Interface/Icons/inv_misc_questionmark";
       }
@@ -227,7 +227,7 @@ public:
           return "TBC Tier 1";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_2:
           return "TBC Tier 2";
-        case PROGRESSION_SERVICE_TIER::TBC_TIER_3: 
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_3:
           return "TBC Tier 3";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_4:
           return "TBC Tier 4";
@@ -275,7 +275,7 @@ public:
           return "I conquered Karazhan, Gruul's Lair, and Magtheridon's Lair.";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_2:
           return "I conquered Serpentshrine Cavern and Tempest Keep.";
-        case PROGRESSION_SERVICE_TIER::TBC_TIER_3: 
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_3:
           return "I conquered Hyjal Summit and slayed Illidan the Betrayer in his Black Temple.";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_4:
           return "I conquered Zul'Aman.";
