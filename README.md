@@ -1,10 +1,7 @@
-﻿# mod-indiv-prog-service
-
-## UNDER CONSTRUCTION
-- This mod is a functioning bare-minimum feature currently. A few icons may have display incorrectly, and it has not been fully for a v1. It provides features for the player to move between tiers (both directions) in the [Individual Progression](https://github.com/ZhengPeiRu21/mod-individual-progression) mod by ZhengPeiRu21.
+﻿# mod-individual-progresssion-service
 
 ## About
-- This mod provides an NPC and custom script that allows the user to set their progression tier in the [Individual Progression](https://github.com/ZhengPeiRu21/mod-individual-progression) mod by ZhengPeiRu21 quickly and easily. The intent is to provide a self-service and in-game solution to jumping through (or going backwards in) the progression system. <bold>Note:This does NOT handle attunement/granting items typically required for Vanilla & TBC raids</bold> (ex: Needing the Drakefire Amulet in your inventory for Vanilla Onyxia). If there is a desire for that, I will happily explore it in the future, so please feel free to provide any feedback you have on that or anything else!
+- This mod provides a spawnable NPC that allows the user to set their progression tier in the [Individual Progression](https://github.com/ZhengPeiRu21/mod-individual-progression) mod by ZhengPeiRu21 quickly and easily. The intent is to provide a self-service and in-game solution to jumping forward (or going backwards) in the progression system. <bold>Note:This does NOT handle attunement/granting items typically required for Vanilla & TBC raids</bold> (ex: Needing the Drakefire Amulet in your inventory for Vanilla Onyxia). If there is a desire for that, I will happily explore it in the future, so please feel free to provide any feedback you have on that or anything else!
 
 ## Features
 - Spawnable progression tier selection npc
@@ -17,3 +14,6 @@
 - Add the related NPC to the database with the included .sql script
 - They can be added into the game with the command ".npc add 371001" once in the world database
 - Enjoy!
+
+## Notes
+- The list of options in the NPCs dialog are presented in a default blizz-like succession, but [Individual Progression](https://github.com/ZhengPeiRu21/mod-individual-progression) provides configuration that can modify properties such as required tier for Zul'Aman and Death Knight.

@@ -21,8 +21,8 @@ enum class PROGRESSION_SERVICE_TIER : uint32 {
     PRE_TBC,         // (Pre-TBC / Dark Portal - unlocks Karazhan, Gruul, Magtheridon)
     TBC_TIER_1,      // (Karazhan, Gruul's Lair, Magtheridon's Lair)
     TBC_TIER_2,     // (Serpentshrine Cavern, Tempest Keep)
-    TBC_TIER_3,     // (Zul'Aman) - TODO: Check the ordering here in IP
-    TBC_TIER_4,     // (Hyjal Summit, Black Temple)
+    TBC_TIER_3,     // (Hyjal Summit, Black Temple)
+    TBC_TIER_4,     // (Zul'Aman)
     TBC_TIER_5,     // (Sunwell Plateau - unlocks Northrend / WotLK leveling)
     WOTLK_TIER_1,   // (Naxxramas, Eye of Eternity, Obsidian Sanctum)
     WOTLK_TIER_2,   // (Ulduar)
@@ -42,6 +42,9 @@ public:
 
     bool OnGossipHello(Player* player, Creature* creature)
     {
+        if (!player || !player->GetSession())
+            return false;
+
         // Check if mod is enabled. Stop execution if disabled
         if(!sConfigMgr->GetOption<bool>("IndividualProgressionService.Enable", true))
         {
@@ -49,17 +52,22 @@ public:
             return false;
         }
 
-        // TODO: Inform player of current progression tier
+        PROGRESSION_SERVICE_TIER currentTier = static_cast<PROGRESSION_SERVICE_TIER>(
+          sIndividualProgression->GetPlayerProgressionFromQuests(player)
+        );
 
-        // Creating Menu Items
-        // TODO: Add pricing config (off by default)
-        // AddGossipItemFor(
-        //     player,
-        //     GOSSIP_ICON_INTERACT_1,
-        //     "|T" + GetTierIcon(PROGRESSION_SERVICE_TIER::START) + ":35:35|tProgress to " + GetTierName(PROGRESSION_SERVICE_TIER::START),
-        //     GOSSIP_SENDER_MAIN,
-        //     static_cast<uint32>(PROGRESSION_SERVICE_TIER::START)
-        // );
+        if(currentTier != PROGRESSION_SERVICE_TIER::START)
+        {
+          ChatHandler(
+            player->GetSession()).PSendSysMessage("You have completed up to and including {}.", 
+            GetTierName(static_cast<PROGRESSION_SERVICE_TIER>(currentTier))
+          );
+        }
+        else{
+          ChatHandler(
+            player->GetSession()).PSendSysMessage("Your progression journey has only just begun."
+          );
+        }
 
         // Loop through all items in the enum and display their related icon and message.
         for(uint32 i = static_cast<uint32>(PROGRESSION_SERVICE_TIER::START);
@@ -71,7 +79,8 @@ public:
           AddGossipItemFor(
               player,
               GOSSIP_ICON_INTERACT_1,
-              "|T" + GetTierIcon(tier) + ":35:35|tProgress through " + GetTierName(tier),
+              // "|T" + GetTierIcon(tier) + ":40:40|tTell the gods I have completed " + GetTierName(tier) + ".",  // old version
+              "|T" + GetTierIcon(tier) + ":40:40|t " + GetTierMessage(tier),     // new version
               GOSSIP_SENDER_MAIN,
               i
           );
@@ -84,6 +93,17 @@ public:
 
     bool OnGossipSelect( Player* player, Creature* creature, uint32 sender, uint32 action)
     { 
+        if (!player || !player->GetSession())
+            return false;
+
+        // Check if mod is enabled. Stop execution if disabled
+        if(!sConfigMgr->GetOption<bool>("IndividualProgressionService.Enable", true))
+        {
+            ChatHandler(player->GetSession()).PSendSysMessage("Individual Progression Service is disabled. Please enable to talk to this NPC.");
+            return false;
+        }
+
+
         // If action id is outside of our scope, we skip
         if (action > static_cast<uint32>(PROGRESSION_SERVICE_TIER::WOTLK_TIER_5))
         {
@@ -93,10 +113,10 @@ public:
 
         auto tier = static_cast<PROGRESSION_SERVICE_TIER>(action);
 
-        // TODO: Here we need to check if the player can purchase it, here is where we do the purchase
-        // TODO: Make it a purchase and check config to see if it's free or not
+        // TODO: Add optional pricing config
+        // TODO: Add attunement/item handling (i.e. give the Drakefire Amulet if progressing through Molten Core so they can enter Onyxias Lair)
 
-        // Apply purchase
+        // Apply tier progression
         ApplyProgressionTierPurchase(player, tier);
 
         CloseGossipMenuFor(player);
@@ -161,9 +181,9 @@ public:
         case PROGRESSION_SERVICE_TIER::TBC_TIER_2:
           return "Interface/Icons/achievement_boss_kael'thassunstrider_01";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_3:   
-          return "Interface/Icons/Achievement_Boss_Zuljin";
-        case PROGRESSION_SERVICE_TIER::TBC_TIER_4:
           return "Interface/Icons/achievement_boss_illidan";
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_4:
+          return "Interface/Icons/Achievement_Boss_Zuljin";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_5:                
           return "Interface/Icons/ACHIEVEMENT_BOSS_KILJAEDAN";    
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_1:
@@ -223,6 +243,54 @@ public:
           return "WotLK Tier 4";
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_5:
           return "WOTLK Tier 5";
+        default:
+          return "Unknown Tier";
+      }
+    }
+
+    std::string GetTierMessage(PROGRESSION_SERVICE_TIER tier)
+    {
+      // this will return strings but doesn't yet
+      switch (tier)
+      {
+        case PROGRESSION_SERVICE_TIER::START:
+          return "I wish to begin my journey again.";
+        case PROGRESSION_SERVICE_TIER::MOLTEN_CORE:
+          return "I conquered Molten Core.";
+        case PROGRESSION_SERVICE_TIER::ONYXIA:
+          return "I conquered Onyxia's Lair.";
+        case PROGRESSION_SERVICE_TIER::BLACKWING_LAIR:
+          return "I conquered Blackwing Lair.";
+        case PROGRESSION_SERVICE_TIER::PRE_AQ:
+          return "I assisted with the war effort, rung the Scarab Gong and opened the Gates of Ahn'Qiraj.";
+        case PROGRESSION_SERVICE_TIER::AQ_WAR:
+          return "I withstood the Ahn'Qiraji counter-attack.";
+        case PROGRESSION_SERVICE_TIER::AQ:
+          return "I conquered the Temple of Ahn'Qiraj.";
+        case PROGRESSION_SERVICE_TIER::NAXX40:
+          return "I battled back the Scourge Invasion and conquered Naxxramas.";
+        case PROGRESSION_SERVICE_TIER::PRE_TBC:
+          return "I defended against the demons of the Dark Portal.";
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_1:
+          return "I conquered Karazhan, Gruul's Lair, and Magtheridon's Lair.";
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_2:
+          return "I conquered Serpentshrine Cavern and Tempest Keep.";
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_3: 
+          return "I conquered Hyjal Summit and slayed Illidan the Betrayer in his Black Temple.";
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_4:
+          return "I conquered Zul'Aman.";
+        case PROGRESSION_SERVICE_TIER::TBC_TIER_5:
+          return "I conquered the Sunwell Plateau.";
+        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_1:
+          return "I ventured to Northrend, defeated Naxxramas, conquered the Eye of Eternity, and stormed the Obsidian Sanctum.";
+        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_2:
+          return "I faced the titan-forged watchers in Ulduar and conquered them.";
+        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_3:
+          return "I conquered the Trial of the Crusader.";
+        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_4:
+          return "The Lich King has fallen.";
+        case PROGRESSION_SERVICE_TIER::WOTLK_TIER_5:
+          return "I conquered Halion in the Ruby Sanctum.";
         default:
           return "Unknown Tier";
       }
