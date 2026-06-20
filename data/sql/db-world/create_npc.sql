@@ -1,9 +1,10 @@
--- Character Services NPC SQL Script
--- This script creates an NPC that provides character services including progression tier purchases
+-- This script creates an NPC that provides Individual Progression Services
 
 SET
-@Entry = 371001,
-@Name = "Big Hoss";
+@Entry = 371001,                                	-- Can change ID if there's a conflict here
+@Name = "Herald of Progress",                    	-- Name here
+@SubName = "Individual Progression Service",		-- Subname here
+@CreatureDisplayID = 27779;      							-- Used to set the visual model
 
 -- Clean up any existing entries safely
 DELETE FROM `creature_template` WHERE `entry` = @Entry;
@@ -13,8 +14,8 @@ DELETE FROM `creature_template_model` WHERE `CreatureID` = @Entry;
 -- Set to faction 35 (friendly to all) and proper flags for gossip interaction
 INSERT INTO `creature_template` (`entry`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `exp`, `faction`, `npcflag`, `rank`, `dmgschool`, `baseattacktime`, `rangeattacktime`, 
 `unit_class`, `unit_flags`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `AIName`, `MovementType`, `HoverHeight`, `RacialLeader`, `movementId`, `RegenHealth`, `flags_extra`, `ScriptName`) VALUES
-(@Entry, @Name, 'Ya Boi', NULL, 0, 80, 80, 2, 35, 1, 0, 0, 2000, 0, 1, 0, 7, 138412032, 0, 0, 0, '', 0, 1, 0, 0, 1, 2, 'individual_progression_service');
+(@Entry, @Name, @SubName, NULL, 0, 80, 80, 2, 35, 1, 0, 0, 2000, 0, 1, 0, 7, 138412032, 0, 0, 0, '', 0, 1, 0, 0, 1, 2, 'individual_progression_service');
 
 -- Set the display model - using Bronze Dragon Aspect model which fits the timeline theme
 INSERT INTO `creature_template_model` (`CreatureID`, `Idx`, `CreatureDisplayID`, `DisplayScale`, `Probability`, `VerifiedBuild`) VALUES
-(@Entry, 0, 27743, 0.8, 1.0, NULL);
+(@Entry, 0, @CreatureDisplayID, 0.8, 1.0, NULL);

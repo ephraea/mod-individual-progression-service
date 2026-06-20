@@ -261,7 +261,7 @@ public:
         case PROGRESSION_SERVICE_TIER::BLACKWING_LAIR:
           return "I conquered Blackwing Lair.";
         case PROGRESSION_SERVICE_TIER::PRE_AQ:
-          return "I assisted with the war effort, rung the Scarab Gong and opened the Gates of Ahn'Qiraj.";
+          return "I assisted with the war effort and opened the Gates of Ahn'Qiraj.";
         case PROGRESSION_SERVICE_TIER::AQ_WAR:
           return "I withstood the Ahn'Qiraji counter-attack.";
         case PROGRESSION_SERVICE_TIER::AQ:
@@ -275,13 +275,13 @@ public:
         case PROGRESSION_SERVICE_TIER::TBC_TIER_2:
           return "I conquered Serpentshrine Cavern and Tempest Keep.";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_3:
-          return "I conquered Hyjal Summit and slayed Illidan the Betrayer in his Black Temple.";
+          return "I conquered Hyjal Summit and slayed Illidan the Betrayer.";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_4:
           return "I conquered Zul'Aman.";
         case PROGRESSION_SERVICE_TIER::TBC_TIER_5:
           return "I conquered the Sunwell Plateau.";
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_1:
-          return "I ventured to Northrend, defeated Naxxramas, conquered the Eye of Eternity, and stormed the Obsidian Sanctum.";
+          return "I ventured to Northrend and conquerd Naxxramas. ";
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_2:
           return "I faced the titan-forged watchers in Ulduar and conquered them.";
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_3:
