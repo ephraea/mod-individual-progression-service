@@ -103,7 +103,6 @@ public:
             return false;
         }
 
-
         // If action id is outside of our scope, we skip
         if (action > static_cast<uint32>(PROGRESSION_SERVICE_TIER::WOTLK_TIER_5))
         {
