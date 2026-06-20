@@ -281,7 +281,7 @@ public:
         case PROGRESSION_SERVICE_TIER::TBC_TIER_5:
           return "I conquered the Sunwell Plateau.";
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_1:
-          return "I ventured to Northrend and conquerd Naxxramas. ";
+          return "I ventured to Northrend and conquered Naxxramas. ";
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_2:
           return "I faced the titan-forged watchers in Ulduar and conquered them.";
         case PROGRESSION_SERVICE_TIER::WOTLK_TIER_3:
