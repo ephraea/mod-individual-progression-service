@@ -1,7 +1,7 @@
 # mod-individual-progresssion-service
 
 ## About
-- This mod provides a spawnable NPC that allows the user to set their progression tier in the [Individual Progression](https://github.com/ZhengPeiRu21/mod-individual-progression) mod by ZhengPeiRu21 quickly and easily. The intent is to provide a self-service and in-game solution to jumping forward (or going backwards) in the progression system. **Note: This does NOT handle attunement/granting items typically required for Vanilla & TBC raids** (ex: Needing the Drakefire Amulet in your inventory for Vanilla Onyxia). If there is a desire for that, I will happily explore it in the future, so please feel free to provide any feedback you have on that or anything else!
+- This mod provides a spawnable NPC that allows the user to set their progression tier in the [Individual Progression](https://github.com/ZhengPeiRu21/mod-individual-progression) mod by ZhengPeiRu21 quickly and easily. The intent is to provide a self-service and in-game solution to jumping forward (or going backwards) in the progression system. **Note: This does NOT handle attunement/granting items typically required for Vanilla & TBC raids** (ex: Needing the Drakefire Amulet in your inventory for Vanilla Onyxia). **If there is a desire for that, I will happily explore it in the future**, so please feel free to provide any feedback you have on that or anything else!
 
 ## Features
 - Spawnable progression tier selection npc
